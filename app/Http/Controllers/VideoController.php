@@ -8,11 +8,20 @@ use Validator;
 
 class VideoController extends Controller
 {
-    public function list($caption=null){
+    public function list($id=null){
+        
         if($id !=null){
-            return Video::where("caption", "like", "%".$caption."%")->get();
+            $video= Video::where("id", $id)->first();
+            
+            $video->user;
+            
+            return $video;
         }
-        return Video::all();
+        $video= Video::all();
+        foreach($video as $p){
+            $p->user;
+        }
+        return $video;
     }
     
     public function add(Request $req){
@@ -56,6 +65,9 @@ class VideoController extends Controller
     }
     public function search($caption){
         $result= Video::where("caption", "like", "%".$caption."%")->get();
+        foreach($result as $p){
+            $p->user;
+        }
         if($result->isEmpty()){
             return response()->json(["Result"=>"Video not found"], 404);
         }

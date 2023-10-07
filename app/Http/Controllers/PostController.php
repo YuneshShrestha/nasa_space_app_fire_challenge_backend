@@ -10,14 +10,21 @@ class PostController extends Controller
 {
     public function list($id=null){
         if($id !=null){
-            return Post::find($id);
+
+            $post= Post::find($id);
         }
-        return Post::all();
+        $post= Post::all();
+        foreach($post as $p){
+            $p->user;
+        }
+        return $post;
     }
     
     public function add(Request $req){
       
         $post = new Post;
+        
+
         $post->photo_path=$req->photo_path;
         $post->caption=$req->caption;
         $post->user_id=$req->user_id;
@@ -62,6 +69,10 @@ class PostController extends Controller
     }
     public function search($name){
         $result= Post::where("caption", "like", "%".$name."%")->get();
+        foreach($result as $p){
+            $p->user;
+        }
+        
         if($result->isEmpty()){
             return response()->json(["Result"=>"Data not found"], 404);
         }

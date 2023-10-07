@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use App\Models\User;
 use App\Models\Discussion;
 use Illuminate\Http\Request;
 
@@ -11,8 +12,14 @@ class DiscussionController extends Controller
     public function index(){
         return Discussion::all();
     }
-    public function show($video_id, $user_id){
-        return Discussion::where('video_id', $video_id)->where('user_id', $user_id)->get();
+    public function show($video_id){
+        $discussionList= Discussion::where('video_id', $video_id)->get();
+        foreach($discussionList as $discussion){
+            $userName = User::where('id', $discussion->user_id)->first();
+
+            $discussion->user_name = $userName->name;
+        }
+        return $discussionList;
     }
     public function store(Request $req){
         

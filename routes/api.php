@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth:sanctum'], function(){
 
 
     // Discussion
-    Route::get("/list_discussion/{video_id}/{user_id}",[DiscussionController::class,'show']);
+    Route::get("/list_discussion/{video_id}",[DiscussionController::class,'show']);
     Route::post("/add_discussion",[DiscussionController::class,'store']);
 
     
