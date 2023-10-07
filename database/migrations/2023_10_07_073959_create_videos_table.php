@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->id();
-            $table->string('text');
+            $table->string('caption');
             $table->string('user_id')->references('id')->on('users')->onDelete('cascade');;
-            $table->string('video_id')->references('id')->on('posts')->onDelete('cascade');;
+            $table->string('video_path');
             $table->timestamps();
         });
     }

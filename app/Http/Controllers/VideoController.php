@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Video;
 use Illuminate\Http\Request;
+use Validator;
 
 class VideoController extends Controller
 {
@@ -42,7 +43,6 @@ class VideoController extends Controller
 
     public function update(Request $req){
         $video = Video::find($req->id);
-        $video->video_path=$req->video_path;
         $video->caption=$req->caption;
 
       
