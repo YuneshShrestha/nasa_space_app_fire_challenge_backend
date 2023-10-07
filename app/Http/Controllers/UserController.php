@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
+class UserController extends Controller
+{
+    function index(Request $request)
+    {
+        $user= User::where('email', $request->email)->first();
+        // print_r($data);
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response([
+                    'message' => ['These credentials do not match our records.']
+                ], 404);
+            }
+        
+             $token = $user->createToken('my-app-token')->plainTextToken;
+        
+            $response = [
+                'user' => $user,
+                'token' => $token
+            ];
+        
+             return response($response, 201);
+    }
+    function register(Request $request)
+    {
+        $user= new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->user_account = $request->user_account;
+        $user->password = Hash::make($request->password);
+        $result = $user->save();
+        if($result){
+            return response()->json(["Result"=>"User has been registered"], 200);
+        }else{
+            return response()->json(["Result"=>"Operation failed"], 500 );
+        }
+    }
+}
